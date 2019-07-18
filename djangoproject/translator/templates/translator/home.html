@@ -10,20 +10,22 @@
         {{ form.as_p }}
         <input type="submit" value="Translate">
     </form>
-    <h1>{{ input }}</h1>
-    <ol type="I">
-        {% for sim, trad, py, def in desc %}
-            {% if sim != trad %}
-                <li>{{ sim }} <small>or</small> {{ trad }}<br></li>
-            {% else %}
-                <li>{{ sim }}<br></li>
-            {% endif %}
-            {{ py }}<br>
-            <ol type="i"> 
-                {% for d in def %}
-                    <li>{{ d }}</li>
-                {% endfor %}
-            </ol><br>
-        {% endfor %}
-    </ol>
+    {% if form.data and not form.errors %}
+        <h1>{{ input }}</h1>
+        <ol type="I">
+            {% for sim, trad, py, def in res %}
+                {% if sim != trad %}
+                    <li>{{ sim }} <small>or</small> {{ trad }}<br></li>
+                {% else %}
+                    <li>{{ sim }}<br></li>
+                {% endif %}
+                {{ py }}<br>
+                <ol type="i"> 
+                    {% for d in def %}
+                        <li>{{ d }}</li>
+                    {% endfor %}
+                </ol><br>
+            {% endfor %}
+        </ol>
+    {% endif %}
 {% endblock content %}

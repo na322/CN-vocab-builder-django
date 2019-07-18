@@ -9,7 +9,7 @@ class TestTranslator(unittest.TestCase):
 
     def test_check(self):
         self.assertIsNotNone(self.tra.text_input)
-
+    
         with self.assertRaises(SystemExit):
             Translator.check_text("hello")
 

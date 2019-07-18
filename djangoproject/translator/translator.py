@@ -29,15 +29,17 @@ class Translator:
 
     """
     def __init__(self, text_input):
-        self.text_input = self.check_text(text_input)
-        self.list_sim = []
-        self.list_trad = []
-        self.list_py = []
-        self.list_def = []
-
-        self.segment_text()
-        self.romanize_text()
-        self.acquire_definition()
+        try:
+            self.text_input = self.check_text(text_input)
+            self.list_sim = []
+            self.list_trad = []
+            self.list_py = []
+            self.list_def = []
+            self.segment_text()
+            self.romanize_text()
+            self.acquire_definition()
+        except ChineseCharsNotFound as e:
+            print(e.msg)
 
     @staticmethod
     def check_text(text_input):
@@ -55,15 +57,12 @@ class Translator:
             ChineseCharsNotFound: When no chinese characters are found in text_input.
         """
 
-        try:
-            char_type = hanzI.identify(text_input)
-            if char_type == 0:
-                raise ChineseCharsNotFound(text_input)
-            else:
-                return text_input
-        except ChineseCharsNotFound as e:
-            print(e.msg)
-            sys.exit(1)
+        char_type = hanzI.identify(text_input)
+        if char_type == 0:
+            raise ChineseCharsNotFound(text_input)
+        else:
+            return text_input
+
 
     def simplify_text(self):
         """
