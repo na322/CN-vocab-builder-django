@@ -4,13 +4,13 @@ into different parts while providing the pinyin, definitions and the Chinese cha
 
 This project was started mainly as a learning experience to get familiar with the Django framework, the React.js framework, implementation of a RESTful webservice and working with Docker. Also a learning experience to improve Test Driven Development.
 
-Python libraries that will be used: -
+Python libraries used/planned to be used: -
 jieba
 pinyin
 hanziconv
 hanzidentifier
 
-Other technologies/frameworks that will be used: -
+Other technologies/frameworks used/planned to be used: -
 Django
 MYSQL
 Docker
