@@ -1,2 +1,6 @@
+*.log
+*.pot
+*.pyc
+local_settings.py
 djangoproject/djangoproject/settings.py
 .vscode/
