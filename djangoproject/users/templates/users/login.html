@@ -1,0 +1,14 @@
+{% extends "translator/base.html" %}
+
+{% block head %}
+<title>Log In</title>
+{% endblock head %}
+
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Log In" >
+    </form>
+    Need to register? <a href="{% url 'login' %}">Sign up here</a>
+{% endblock content %}
