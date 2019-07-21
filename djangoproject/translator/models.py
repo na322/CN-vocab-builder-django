@@ -8,3 +8,5 @@ class InputHistory(models.Model):
     input_raw = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date_input = models.DateTimeField(default=timezone.now)
+
+    objects = models.Manager()

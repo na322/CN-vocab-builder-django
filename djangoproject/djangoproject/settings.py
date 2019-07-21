@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'users.apps.UsersConfig',
+    'crispy_forms',
     'translator.apps.TranslatorConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -122,4 +123,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_REDIRECT_URL = LOGOUT_REDIRECT_URL = 'translator-home'
+LOGIN_REDIRECT_URL = 'translator-home'
+LOGIN_URL = 'login'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

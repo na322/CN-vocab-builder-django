@@ -16,7 +16,6 @@ def home(request):
             tl = Translator(form.cleaned_data['text_input'])
             context['input'] = tl.text_input
             context['res'] = zip(tl.list_sim, tl.list_trad, tl.list_py, tl.list_def)
-
             if request.user.is_authenticated:
                 input_history = InputHistory(input_raw=tl.text_input, user=request.user)
                 input_history.save()

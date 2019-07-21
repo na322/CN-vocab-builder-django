@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import UserRegisterForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from translator.models import InputHistory
 
 
 def register(request):
@@ -14,3 +16,8 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form})
+
+@login_required
+def history(request):
+    test = InputHistory.objects.filter(user=request.user)
+    return render(request, 'users/history.html', {'test': test})

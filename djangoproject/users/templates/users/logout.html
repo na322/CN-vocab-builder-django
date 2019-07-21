@@ -5,9 +5,7 @@
 {% endblock head %}
 
 {% block content %}
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Sign Up">
-    </form>
+    You have been logged out successfully<br>
+    <small class="text-muted"><a href="{% url 'login' %}">Log in</a></small><br>
+    <small class="text-muted"><a href="{% url 'translator-home' %}">Use translator without logging in</a></small>
 {% endblock content %}

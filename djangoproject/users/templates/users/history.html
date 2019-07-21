@@ -1,0 +1,11 @@
+{% extends "translator/base.html" %}
+
+{% block head %}
+<title>History</title>
+{% endblock head %}
+
+{% block content %}
+    {% for e in test %}
+        <ul> {{ e.input_raw }} {{ e.date_input }}</ul>
+    {% endfor %}
+{% endblock content %}
