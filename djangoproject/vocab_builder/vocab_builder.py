@@ -1,17 +1,13 @@
 import jieba
 from hanziconv import HanziConv as hanzC
-
 import pinyin
 from pinyin import cedict
-
 import hanzidentifier as hanzI
-
 import sys
-
 from .exceptions import ChineseCharsNotFound
 import json
 
-class Translator:
+class CNVocabBuilder:
     """
     Class used to translate inputted text containing Chinese characters into simplified and traditional Chinese, while acquiring the pinyin and definitions
     of each segment found in the text.
@@ -29,15 +25,18 @@ class Translator:
 
     """
     def __init__(self, text_input):
-        self.text_input = self.check_text(text_input)
-        self.list_sim = []
-        self.list_trad = []
-        self.list_py = []
-        self.list_def = []
+        try:
+            self.text_input = self.check_text(text_input)
+            self.list_sim = []
+            self.list_trad = []
+            self.list_py = []
+            self.list_defi = []
 
-        self.segment_text()
-        self.romanize_text()
-        self.acquire_definition()
+            self.segment_text()
+            self.romanize_text()
+            self.acquire_definition()
+        except ChineseCharsNotFound as e:
+            print(e.msg)
 
     @staticmethod
     def check_text(text_input):
@@ -55,15 +54,18 @@ class Translator:
             ChineseCharsNotFound: When no chinese characters are found in text_input.
         """
 
-        try:
-            char_type = hanzI.identify(text_input)
-            if char_type == 0:
-                raise ChineseCharsNotFound(text_input)
-            else:
-                return text_input
-        except ChineseCharsNotFound as e:
-            print(e.msg)
-            sys.exit(1)
+        char_type = hanzI.identify(text_input)
+        if char_type == 0:
+            raise ChineseCharsNotFound(text_input)
+        else:
+            return text_input
+
+    def filter_text(self):
+        """
+        """
+        text_filtered = [x for x in self.text_input if hanzI.identify(x) > 0]
+
+        return text_filtered
 
     def simplify_text(self):
         """
@@ -73,8 +75,8 @@ class Translator:
         Returns:
             text_sim (str): A string containing simplified Chinese characters, obtained by simplifying text_input using hanziconverter.
         """
-
-        text_sim = hanzC.toSimplified(self.text_input)
+        text_filtered = self.filter_text()
+        text_sim = hanzC.toSimplified(text_filtered)
         
         return text_sim
         
@@ -101,19 +103,19 @@ class Translator:
         Gets lists of definitions for the segmented Chinese characters.
         """
         for char in self.list_sim:
-            self.list_def.append(cedict.translate_word(char))
+            self.list_defi.append(cedict.translate_word(char))
     
     def jsonify_attributes(self):
         """
         """
         json_file = {
-            'input': self.text_input,
+            'text': self.text_input,
             'sim': self.list_sim,
             'trad': self.list_trad,
             'py': self.list_py,
-            'def': self.list_def
+            'defi': self.list_defi
                 }
         return json.dumps(json_file)
 
 if __name__== "__main__":
-    app = Translator("我来到北京清华大学")
+    tl = CNVocabBuilder("我来到北京清华大学300?")

@@ -1,13 +1,21 @@
-{% extends "translator/base.html" %}
+{% extends "vocab_builder/base.html" %}
+{% load crispy_forms_tags %}
 
 {% block head %}
 <title>User Registration</title>
 {% endblock head %}
 
 {% block content %}
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Sign Up" >
-    </form>
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" value="Sign Up" >
+        </form>
+        <div class="border-top pt-3">
+                <small class="text-muted">
+                    Already registered? <a class="ml-2" href="/login">Login</a>
+                </small>
+        </div>
+    </div>
 {% endblock content %}

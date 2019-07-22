@@ -8,3 +8,11 @@ class InputHistory(models.Model):
     input_raw = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date_input = models.DateTimeField(default=timezone.now)
+
+    objects = models.Manager()
+
+class UserVocabulary(models.Model):
+    phrase = models.CharField(max_length=10)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    objects = models.Manager()

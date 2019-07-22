@@ -1,0 +1,31 @@
+{% extends "vocab_builder/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+<title>Home</title>
+{% endblock head %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+    </form>
+    {% if form.data and not form.errors %}
+        <h1>{{ input }}</h1>
+        <ol type="I">
+            {% for sim, trad, py, def in res %}
+                {% if sim != trad %}
+                    <li>{{ sim }} <small>or</small> {{ trad }}<br></li>
+                {% else %}
+                    <li>{{ sim }}<br></li>
+                {% endif %}
+                {{ py }}<br>
+                <ol type="i"> 
+                    {% for d in def %}
+                        <li>{{ d }}</li>
+                    {% endfor %}
+                </ol><br>
+            {% endfor %}
+        </ol>
+    {% endif %}
+{% endblock content %}
