@@ -1,11 +1,14 @@
-{% extends "translator/base.html" %}
+{% extends "vocab_builder/base.html" %}
 
 {% block head %}
 <title>History</title>
 {% endblock head %}
 
 {% block content %}
-    {% for e in test %}
+    {% for e in input_history %}
         <ul> {{ e.input_raw }} {{ e.date_input }}</ul>
+    {% endfor %}
+    {% for e in user_vocab %}
+        <ul> {{ e.phrase }} </ul>
     {% endfor %}
 {% endblock content %}

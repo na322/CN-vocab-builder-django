@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from translator.models import InputHistory
+from vocab_builder.models import InputHistory, UserVocabulary
 
 
 def register(request):
@@ -19,5 +19,6 @@ def register(request):
 
 @login_required
 def history(request):
-    test = InputHistory.objects.filter(user=request.user)
-    return render(request, 'users/history.html', {'test': test})
+    input_history = InputHistory.objects.values('input_raw', 'date_input').filter(user=request.user)
+    user_vocab = UserVocabulary.objects.filter(user=request.user)
+    return render(request, 'users/history.html', {'input_history': input_history, 'user_vocab': user_vocab})

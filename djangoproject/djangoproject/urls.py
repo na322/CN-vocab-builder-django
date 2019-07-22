@@ -20,7 +20,7 @@ from users import views as views_user
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('translator.urls')),
+    path('', include('vocab_builder.urls')),
     path('register/', views_user.register, name='register'),
     path('login/', views_auth.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', views_auth.LogoutView.as_view(template_name='users/logout.html'), name='logout'),

@@ -1,4 +1,4 @@
-{% extends "translator/base.html" %}
+{% extends "vocab_builder/base.html" %}
 
 {% block head %}
 <title>Logout</title>
@@ -7,5 +7,5 @@
 {% block content %}
     You have been logged out successfully<br>
     <small class="text-muted"><a href="{% url 'login' %}">Log in</a></small><br>
-    <small class="text-muted"><a href="{% url 'translator-home' %}">Use translator without logging in</a></small>
+    <small class="text-muted"><a href="{% url 'vocab_builder-home' %}">Use translator without logging in</a></small>
 {% endblock content %}
