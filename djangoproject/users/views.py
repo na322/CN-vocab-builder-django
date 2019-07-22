@@ -20,5 +20,5 @@ def register(request):
 @login_required
 def history(request):
     input_history = InputHistory.objects.values('input_raw', 'date_input').filter(user=request.user)
-    user_vocab = UserVocabulary.objects.filter(user=request.user)
+    user_vocab = UserVocabulary.objects.values('phrase').filter(user=request.user)
     return render(request, 'users/history.html', {'input_history': input_history, 'user_vocab': user_vocab})
