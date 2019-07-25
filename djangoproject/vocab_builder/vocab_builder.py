@@ -115,7 +115,7 @@ class CNVocabBuilder:
             'py': self.list_py,
             'defi': self.list_defi
                 }
-        return json.dumps(json_file)
+        return json.dumps(json_file, ensure_ascii=False).encode('utf8')
 
 if __name__== "__main__":
     tl = CNVocabBuilder("我来到北京清华大学300?")

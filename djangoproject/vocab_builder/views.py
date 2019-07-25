@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from .models import InputHistory, UserVocabulary
 from .vocab_builder import CNVocabBuilder
 from .forms import TextInputForm
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 def home(request):
     context = {
@@ -13,13 +15,13 @@ def home(request):
     if request.method == 'POST':
         form = context['form'] = TextInputForm(request.POST)
         if form.is_valid():
-            tl = CNVocabBuilder(form.cleaned_data['text_input'])
-            context['input'] = tl.text_input
-            context['res'] = zip(tl.list_sim, tl.list_trad, tl.list_py, tl.list_defi)
+            vb = CNVocabBuilder(form.cleaned_data['text_input'])
+            context['input'] = vb.text_input
+            context['res'] = zip(vb.list_sim, vb.list_trad, vb.list_py, vb.list_defi)
             if request.user.is_authenticated:
-                input_history = InputHistory(input_raw=tl.text_input, user=request.user)
+                input_history = InputHistory(input_raw=vb.text_input, user=request.user)
                 input_history.save()
-                for p in tl.list_sim:
+                for p in vb.list_sim:
                     user_vocab = UserVocabulary(phrase=p, user=request.user)
                     user_vocab.save()               
             return render(request, 'vocab_builder/home.html', context)
@@ -31,3 +33,9 @@ def home(request):
 
 def about(request):
     return render(request, 'vocab_builder/about.html')
+
+@api_view(['POST'])
+def api_build(request):
+    if request.method == 'POST':
+        vb = CNVocabBuilder(request.data)
+        return HttpResponse(vb.jsonify_attributes())
