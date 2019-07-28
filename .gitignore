@@ -3,3 +3,6 @@
 *.pyc
 *.ini
 .vscode/
+db.sqlite3
+.coverage
+htmlcov/
