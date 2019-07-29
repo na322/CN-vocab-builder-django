@@ -14,5 +14,6 @@ class InputHistory(models.Model):
 class UserVocabulary(models.Model):
     phrase = models.CharField(max_length=10)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    input_history = models.ForeignKey(InputHistory, on_delete=models.CASCADE)
 
     objects = models.Manager()
