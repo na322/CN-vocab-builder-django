@@ -9,6 +9,8 @@ from .api import VocabBuilderViewSet
 urlpatterns = [
     path('', views.home, name='vocab_builder-home'),
     path('about/', views.about, name='vocab_builder-about'),
-    path('api/build', views.api_build, name='api-build')
+    path('api/build', views.api_build, name='api-build'),
+    path('api/history', views.api_history, name='api-history'),
+    path('api/vocab', views.api_vocab, name='api-vocab')
 ]
 

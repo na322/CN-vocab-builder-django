@@ -5,6 +5,7 @@ from .vocab_builder import CNVocabBuilder
 from .forms import TextInputForm
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from .serializers import IHSerializer, UVSerializer
 
 def home(request):
     context = {
@@ -36,6 +37,24 @@ def about(request):
 
 @api_view(['POST'])
 def api_build(request):
+    vb = CNVocabBuilder(request.data)
+    return HttpResponse(vb.jsonify_attributes())
+
+@api_view(['GET', 'POST'])
+def api_history(request):
+    if request.method == 'GET':
+        input_history = InputHistory.objects.all()
+        serializer = IHSerializer(input_history, many=True)
+        return Response(serializer.data)
     if request.method == 'POST':
-        vb = CNVocabBuilder(request.data)
-        return HttpResponse(vb.jsonify_attributes())
+        pass
+
+@api_view(['GET', 'POST'])
+def api_vocab(request):
+    if request.method == 'GET':
+        user_vocab = UserVocabulary.objects.all()
+        serializer = UVSerializer(user_vocab, many=True)
+        return Response(serializer.data)
+    if request.method == 'POST':
+        pass
+    
