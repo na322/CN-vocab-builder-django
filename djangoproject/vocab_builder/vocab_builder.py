@@ -95,27 +95,13 @@ class CNVocabBuilder:
         """
         Gets the pinyin for the segmented Chinese characters.
         """
-        for char in self.list_sim:
-            self.list_py.append(pinyin.get(char))
+        self.list_py = list(map(pinyin.get, self.list_sim))
 
     def acquire_definition(self):
         """
         Gets lists of definitions for the segmented Chinese characters.
         """
-        for char in self.list_sim:
-            self.list_defi.append(cedict.translate_word(char))
-    
-    def jsonify_attributes(self):
-        """
-        """
-        json_file = {
-            'text': self.text_input,
-            'sim': self.list_sim,
-            'trad': self.list_trad,
-            'py': self.list_py,
-            'defi': self.list_defi
-                }
-        return json.dumps(json_file, ensure_ascii=False).encode('utf8')
+        self.list_defi = list(map(cedict.translate_word, self.list_sim))
 
 if __name__== "__main__":
     tl = CNVocabBuilder("我来到北京清华大学300?")

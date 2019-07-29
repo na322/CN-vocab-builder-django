@@ -13,7 +13,6 @@ sim = cnvb.list_sim
 trad = cnvb.list_trad
 py = cnvb.list_py
 defi = cnvb.list_defi
-json_file = cnvb.jsonify_attributes()
 
 def test_check():
     assert cnvb.text_input is not None
@@ -61,14 +60,6 @@ def test_definition():
     assert all(x in list_test for x in defi)
 
     assert len(defi) == len(sim)
-
-def test_json():
-    assert type(json_file) is str
-    
-    attr = json.loads(json_file)
-    attr_values = tuple(attr.values())
-    tuple_test = (text, sim, trad, py, defi)
-    assert attr_values == tuple_test
 
 if __name__ == "__main__":
     pytest.main([__file__])
