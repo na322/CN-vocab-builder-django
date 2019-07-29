@@ -7,6 +7,6 @@ from .vocab_builder import CNVocabBuilder
 
 class VocabBuilderViewSet(viewsets.ViewSet):
     """
+    to be done: implement viewset for api
     """
-    def build_vocab(self, request):
-        pass
+    pass

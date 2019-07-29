@@ -8,21 +8,20 @@ from rest_framework.response import Response
 from .serializers import IHSerializer, UVSerializer
 
 def models_save(request, vb):
-    if request.user.is_authenticated:
-        input_history = InputHistory(input_raw=vb.text_input, user=request.user)
-        input_history.save()
-        for p in vb.list_sim:
-            user_vocab = UserVocabulary(phrase=p, user=request.user)
-            user_vocab.save()               
+    input_history = InputHistory(input_raw=vb.text_input, user=request.user)
+    input_history.save()
+    for p in vb.list_sim:
+        user_vocab = UserVocabulary(phrase=p, user=request.user)
+        user_vocab.save()               
 
 def home_post(request, context):
     form = context['form']
     if form.is_valid():
-            vb = CNVocabBuilder(form.cleaned_data['text_input'])
-            context['input'] = vb.text_input
-            context['res'] = zip(vb.list_sim, vb.list_trad, vb.list_py, vb.list_defi)
-            models_save(request, vb)             
-            return render(request, 'vocab_builder/home.html', context)
+        vb = CNVocabBuilder(form.cleaned_data['text_input'])
+        context['input'] = vb.text_input
+        context['res'] = zip(vb.list_sim, vb.list_trad, vb.list_py, vb.list_defi)
+        if request.user.is_authenticated: models_save(request, vb)             
+        return render(request, 'vocab_builder/home.html', context)
     else:
         return render(request, 'vocab_builder/home.html', context)
 
@@ -54,6 +53,7 @@ def api_history(request):
         serializer = IHSerializer(input_history, many=True)
         return Response(serializer.data)
     if request.method == 'POST':
+        # to do
         pass
 
 @api_view(['GET', 'POST'])
@@ -63,5 +63,6 @@ def api_vocab(request):
         serializer = UVSerializer(user_vocab, many=True)
         return Response(serializer.data)
     if request.method == 'POST':
+        # to do
         pass
     
