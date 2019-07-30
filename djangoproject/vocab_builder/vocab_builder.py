@@ -63,8 +63,8 @@ class CNVocabBuilder:
     def filter_text(self):
         """
         """
-        text_filtered = [x for x in self.text_input if hanzI.identify(x) > 0]
 
+        text_filtered = [x for x in self.text_input if hanzI.identify(x) > 0]
         return text_filtered
 
     def simplify_text(self):
@@ -75,9 +75,9 @@ class CNVocabBuilder:
         Returns:
             text_sim (str): A string containing simplified Chinese characters, obtained by simplifying text_input using hanziconverter.
         """
+
         text_filtered = self.filter_text()
         text_sim = hanzC.toSimplified(text_filtered)
-        
         return text_sim
         
     def segment_text(self):
@@ -87,7 +87,6 @@ class CNVocabBuilder:
         """
 
         text_sim = self.simplify_text()
-
         self.list_sim = list(jieba.cut(text_sim))
         self.list_trad = list(map(hanzC.toTraditional, self.list_sim))
 
@@ -95,12 +94,14 @@ class CNVocabBuilder:
         """
         Gets the pinyin for the segmented Chinese characters.
         """
+
         self.list_py = list(map(pinyin.get, self.list_sim))
 
     def acquire_definition(self):
         """
         Gets lists of definitions for the segmented Chinese characters.
         """
+        
         self.list_defi = list(map(cedict.translate_word, self.list_sim))
 
 if __name__== "__main__":
