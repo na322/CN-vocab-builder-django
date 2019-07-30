@@ -53,7 +53,6 @@ class CNVocabBuilder:
         Raises:
             ChineseCharsNotFound: When no chinese characters are found in text_input.
         """
-
         char_type = hanzI.identify(text_input)
         if char_type == 0:
             raise ChineseCharsNotFound(text_input)
@@ -62,10 +61,9 @@ class CNVocabBuilder:
 
     def filter_text(self):
         """
+        Filters out any non-Chinese characters in text input.
         """
-        text_filtered = [x for x in self.text_input if hanzI.identify(x) > 0]
-
-        return text_filtered
+        return [x for x in self.text_input if hanzI.identify(x) > 0]
 
     def simplify_text(self):
         """
@@ -76,16 +74,14 @@ class CNVocabBuilder:
             text_sim (str): A string containing simplified Chinese characters, obtained by simplifying text_input using hanziconverter.
         """
         text_filtered = self.filter_text()
-        text_sim = hanzC.toSimplified(text_filtered)
-        
-        return text_sim
+
+        return hanzC.toSimplified(text_filtered)
         
     def segment_text(self):
         """
         Simplifies text input first, and then segments it using the jieba module. Simplification is done first since 
         jieba was made to work with simplified Chinese.
         """
-
         text_sim = self.simplify_text()
 
         self.list_sim = list(jieba.cut(text_sim))
