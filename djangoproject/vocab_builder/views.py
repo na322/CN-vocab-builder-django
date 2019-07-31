@@ -1,23 +1,15 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import InputHistory, UserVocabulary
+from .models import InputHistory, UserVocabulary, models_save
 from .vocab_builder import CNVocabBuilder
 from .forms import TextInputForm
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import IHSerializer, UVSerializer
 
-def context_factory(view_name):
-    if view_name == 'home':
-        return {'form': None, 'input': None, 'res': None}
-
-
-def models_save(request, vb):
-    input_history = InputHistory(input_raw=vb.text_input, user=request.user)
-    input_history.save()
-    for p in vb.list_sim:
-        user_vocab = UserVocabulary(phrase=p, user=request.user, input_history=input_history)
-        user_vocab.save()               
+def context_factory(view):
+    if view == home:
+        return {'form': None, 'input': None, 'res': None}       
 
 
 def home_post(request, context):
@@ -35,7 +27,7 @@ def home_get(request, context):
     return render(request, 'vocab_builder/home.html', context)
 
 def home(request):
-    context = context_factory('home')
+    context = context_factory(home)
     if request.method == 'POST':
         return home_post(request, context)
     else:

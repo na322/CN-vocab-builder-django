@@ -5,12 +5,18 @@
 {% endblock head %}
 
 {% block content %}
+    <ul>    
     {% for e in input_history %}
-        <ul> {{ e.input_raw }} {{ e.date_input }}</ul>
+        <div class="container">
+            {{ e.input_raw }} <small>{{ e.date_input }}</small>
+            <ol type="i">
+            {% for f in user_vocab %}
+                {% if f.input_history_id == e.id %}
+                <li> {{ f.phrase }} </li>
+                {% endif %}
+            {% endfor %}
+            </ol>
+        </div>
     {% endfor %}
-    {% for e in user_vocab %}
-        <ul> {{ e.phrase }} </ul>
-    {% endfor %}
+    </ul>
 {% endblock content %}
-
-<!-- Unfinished, need to complete design -->

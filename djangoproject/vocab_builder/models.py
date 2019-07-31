@@ -17,3 +17,10 @@ class UserVocabulary(models.Model):
     input_history = models.ForeignKey(InputHistory, on_delete=models.CASCADE)
 
     objects = models.Manager()
+
+def models_save(request, vb):
+    input_history = InputHistory(input_raw=vb.text_input, user=request.user)
+    input_history.save()
+    for p in vb.list_sim:
+        user_vocab = UserVocabulary(phrase=p, user=request.user, input_history=input_history)
+        user_vocab.save()        
