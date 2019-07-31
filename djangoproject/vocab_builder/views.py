@@ -44,30 +44,4 @@ def home(request):
 
 def about(request):
     return render(request, 'vocab_builder/about.html')
-
-
-@api_view(['POST'])
-def api_build(request):
-    vb = CNVocabBuilder(request.data)
-    return Response(vb.__dict__)
-
-@api_view(['GET', 'POST'])
-def api_history(request):
-    if request.method == 'GET':
-        input_history = InputHistory.objects.all()
-        serializer = IHSerializer(input_history, many=True)
-        return Response(serializer.data)
-    if request.method == 'POST':
-        # to do
-        pass
-
-@api_view(['GET', 'POST'])
-def api_vocab(request):
-    if request.method == 'GET':
-        user_vocab = UserVocabulary.objects.all()
-        serializer = UVSerializer(user_vocab, many=True)
-        return Response(serializer.data)
-    if request.method == 'POST':
-        # to do
-        pass
     
