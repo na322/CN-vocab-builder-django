@@ -4,10 +4,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from vocab_builder.models import InputHistory, UserVocabulary
 
-def context_factory(view_name):
-    if view_name == 'register':
+def context_factory(view):
+    if view == register:
         return {'form': None}
-    elif view_name == 'history':
+    elif view == history:
         return {'input_history': None, 'user_vocab': None}
 
 
@@ -24,7 +24,7 @@ def register_post(request, context):
         return redirect('login')
 
 def register(request):
-    context = context_factory('register')
+    context = context_factory(register)
     if request.method == 'POST': 
         return register_post(request, context)
     else: 
@@ -34,6 +34,6 @@ def register(request):
 @login_required
 def history(request):
     context = context_factory(history)
-    context['input_history'] = InputHistory.objects.values('input_raw', 'date_input').filter(user=request.user)
-    context['user_vocab'] = UserVocabulary.objects.values('phrase').filter(user=request.user)
+    context['input_history'] = InputHistory.objects.values('input_raw', 'date_input', 'id').filter(user=request.user)
+    context['user_vocab'] = UserVocabulary.objects.values('phrase', 'input_history_id').filter(user=request.user)
     return render(request, 'users/history.html', context)

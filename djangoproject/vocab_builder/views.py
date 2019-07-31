@@ -1,23 +1,15 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import InputHistory, UserVocabulary
+from .models import InputHistory, UserVocabulary, models_save
 from .vocab_builder import CNVocabBuilder
 from .forms import TextInputForm
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import IHSerializer, UVSerializer
 
-def context_factory(view_name):
-    if view_name == 'home':
-        return {'form': None, 'input': None, 'res': None}
-
-
-def models_save(request, vb):
-    input_history = InputHistory(input_raw=vb.text_input, user=request.user)
-    input_history.save()
-    for p in vb.list_sim:
-        user_vocab = UserVocabulary(phrase=p, user=request.user, input_history=input_history)
-        user_vocab.save()               
+def context_factory(view):
+    if view == home:
+        return {'form': None, 'input': None, 'res': None}       
 
 
 def home_post(request, context):
@@ -35,7 +27,7 @@ def home_get(request, context):
     return render(request, 'vocab_builder/home.html', context)
 
 def home(request):
-    context = context_factory('home')
+    context = context_factory(home)
     if request.method == 'POST':
         return home_post(request, context)
     else:
@@ -44,30 +36,4 @@ def home(request):
 
 def about(request):
     return render(request, 'vocab_builder/about.html')
-
-
-@api_view(['POST'])
-def api_build(request):
-    vb = CNVocabBuilder(request.data)
-    return Response(vb.__dict__)
-
-@api_view(['GET', 'POST'])
-def api_history(request):
-    if request.method == 'GET':
-        input_history = InputHistory.objects.all()
-        serializer = IHSerializer(input_history, many=True)
-        return Response(serializer.data)
-    if request.method == 'POST':
-        # to do
-        pass
-
-@api_view(['GET', 'POST'])
-def api_vocab(request):
-    if request.method == 'GET':
-        user_vocab = UserVocabulary.objects.all()
-        serializer = UVSerializer(user_vocab, many=True)
-        return Response(serializer.data)
-    if request.method == 'POST':
-        # to do
-        pass
     
