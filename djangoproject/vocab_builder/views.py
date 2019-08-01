@@ -36,4 +36,3 @@ def home(request):
 
 def about(request):
     return render(request, 'vocab_builder/about.html')
-    

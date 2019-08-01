@@ -1,7 +1,8 @@
 {% extends "vocab_builder/base.html" %}
+{% load static %}
 
 {% block head %}
-<title>History</title>
+<title>Vocab</title>
 {% endblock head %}
 
 {% block content %}
@@ -13,7 +14,7 @@
                 <ol type="i">
                 {% for f in user_vocab %}
                     {% if f.input_history_id == e.id %}
-                    <li> {{ f.phrase }} </li>
+                    <li class="phrase"> {{ f.phrase }} </li>
                     {% endif %}
                 {% endfor %}
                 </ol>
@@ -23,4 +24,32 @@
     {% else %}
         Nothing to show here, start building your vocabulary by using the <a href="{% url 'vocab_builder-home' %}">vocabulary builder</a>.
     {% endif %}
+    <!-- <script src="{% static 'js/vocab_ajax.js' %}"></script> -->
+    <script>
+        function vocab_ajax(phrase) {
+            var myArr = null
+            var xhr = new XMLHttpRequest();
+            var url = '{% url "vocab_builder-api-build" %}';
+            var csrf_token = '{{csrf_token}}'
+            var body = JSON.stringify({"phrase":phrase});
+            xhr.open("POST", url, true);
+            xhr.withCredentials = true;
+            xhr.setRequestHeader('X-CSRFToken', csrf_token);
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    myArr = JSON.parse(this.responseText);
+                }
+            };
+            xhr.send(JSON.stringify(phrase));
+        }
+        var elems = document.getElementsByClassName("phrase")
+        for (var i=0; i<elems.length; i++) {
+            // elems[i].addEventListener("mouseover", vocab_ajax)
+            elems[i].addEventListener("mouseover", function(){
+                vocab_ajax(this.innerHTML.trim())
+            })
+        }
+    </script>
 {% endblock content %}
