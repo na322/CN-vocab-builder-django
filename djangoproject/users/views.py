@@ -7,7 +7,7 @@ from vocab_builder.models import InputHistory, UserVocabulary
 def context_factory(view):
     if view == register:
         return {'form': None}
-    elif view == history:
+    elif view == vocab:
         return {'input_history': None, 'user_vocab': None}
 
 
@@ -32,8 +32,8 @@ def register(request):
 
 
 @login_required
-def history(request):
-    context = context_factory(history)
+def vocab(request):
+    context = context_factory(vocab)
     context['input_history'] = InputHistory.objects.values('input_raw', 'date_input', 'id').filter(user=request.user)
     context['user_vocab'] = UserVocabulary.objects.values('phrase', 'input_history_id').filter(user=request.user)
-    return render(request, 'users/history.html', context)
+    return render(request, 'users/vocab.html', context)

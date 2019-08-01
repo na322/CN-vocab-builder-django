@@ -1,0 +1,26 @@
+{% extends "vocab_builder/base.html" %}
+
+{% block head %}
+<title>History</title>
+{% endblock head %}
+
+{% block content %}
+    {% if input_history %}
+        <ul>    
+        {% for e in input_history %}
+            <div class="container">
+                {{ e.input_raw }} <small>{{ e.date_input }}</small>
+                <ol type="i">
+                {% for f in user_vocab %}
+                    {% if f.input_history_id == e.id %}
+                    <li> {{ f.phrase }} </li>
+                    {% endif %}
+                {% endfor %}
+                </ol>
+            </div>
+        {% endfor %}
+        </ul>
+    {% else %}
+        Nothing to show here, start building your vocabulary by using the <a href="{% url 'vocab_builder-home' %}">vocabulary builder</a>.
+    {% endif %}
+{% endblock content %}
